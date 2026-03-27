@@ -1,5 +1,5 @@
 import type { NextFunction, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { AuthReq } from "../types/express";
 import dotenv from "dotenv";
 
@@ -18,10 +18,9 @@ const authMiddleware = (req: AuthReq, res: Response, next: NextFunction) => {
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET as string
-    );
+    ) as JwtPayload;
 
-    // see the userId here 
-    req.userId = decoded.userId ;
+    req.userId = decoded.id ;
 
     next();
   } catch (error) {
